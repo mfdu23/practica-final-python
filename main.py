@@ -1,5 +1,7 @@
 #Funciones para la interfaz de consola:
+from clases.producto import Producto
 from clases.cliente import Cliente
+from clases.inventario import Inventario
 from clases.mascota import Perro, Gato
 from clases.venta import Venta
 
@@ -31,6 +33,15 @@ def registrar_cliente():
     telefono = input("Ingrese el teléfono del cliente: ")    
     cliente = Cliente(nombre, direccion, telefono)
     return cliente
+
+def registrar_producto():
+    nombre = input("Ingrese el nombre del producto: ")
+    categoria = input("Ingrese la categoría del producto: ")
+    precio = input("Ingrese el precio del producto: ")
+    cantidad = int(input("Ingrese la cantidad del producto: "))
+    producto = Producto(nombre, categoria, precio, cantidad)
+    return producto
+                       
 
 def registrar_venta(cliente, inventario):
     nombre_cliente = input("Ingrese el nombre del cliente: ")
@@ -70,3 +81,63 @@ def mostrar_menu():
     print("7. Mostrar Información de Productos")
     print("8. Generar Alerta de Inventario")
     print("9. Salir")
+
+def main():
+    mascotas = []
+    clientes = []
+    inventario = Inventario()
+
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            mascota = registrar_mascota()
+            if mascota:
+                mascotas.append(mascota)                
+                print("Mascota registrada exitosamente.")
+
+        elif opcion == "2":
+            cliente = registrar_cliente()
+            if cliente:
+                clientes.append(cliente)
+                print("Cliente registrado exitosamente.")
+
+        elif opcion == "3":
+            producto = registrar_producto()
+            if producto:
+                inventario.agregar_producto(producto)
+                print("Producto registrado exitosamente.")
+        
+        elif opcion == "4":
+            registrar_venta(cliente, inventario)
+        
+        elif opcion == "5":
+            for mascota in mascotas:
+                print(mascota.mostrar_informacion())
+                if isinstance(mascota, Perro) or isinstance(mascota, Gato):
+                    print(mascota.mostrar_informacion_mascota())
+        
+        elif opcion == "6":
+            for cliente in clientes:
+                print(cliente.mostrar_informacion())
+        
+        elif opcion == "7":
+            for producto in inventario.lista_productos:
+                print(producto.mostrar_informacion())
+        
+        elif opcion == "8":
+            umbral_minimo = int(input("Ingrese el umbral mínimo de inventario: "))
+            print(inventario.generar_alerta_inventario(umbral_minimo))
+
+        elif opcion == "9":
+            print("Saliendo del programa...")
+            break
+
+        else:
+            print("Opción no válida. Por favor, intente de nuevo.")
+
+if __name__ == "__main__":
+    main()
+
+        

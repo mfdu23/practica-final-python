@@ -37,15 +37,15 @@ def registrar_cliente():
 def registrar_producto():
     nombre = input("Ingrese el nombre del producto: ")
     categoria = input("Ingrese la categoría del producto: ")
-    precio = input("Ingrese el precio del producto: ")
+    precio = float(input("Ingrese el precio del producto: "))
     cantidad = int(input("Ingrese la cantidad del producto: "))
-    producto = Producto(nombre, categoria, precio, cantidad)
+    producto = Producto(nombre, precio, cantidad, categoria)
     return producto
                        
 
-def registrar_venta(cliente, inventario):
+def registrar_venta(clientes, inventario):
     nombre_cliente = input("Ingrese el nombre del cliente: ")
-    cliente = next((c for c in inventario.lista_productos if c.nombre == nombre_cliente), None)
+    cliente = next((c for c in clientes if c.nombre == nombre_cliente), None)
     if not cliente:
         print("Cliente no encontrado.")
         return
@@ -110,13 +110,13 @@ def main():
                 print("Producto registrado exitosamente.")
         
         elif opcion == "4":
-            registrar_venta(cliente, inventario)
+            registrar_venta(clientes, inventario)
         
         elif opcion == "5":
             for mascota in mascotas:
                 print(mascota.mostrar_informacion())
                 if isinstance(mascota, Perro) or isinstance(mascota, Gato):
-                    print(mascota.mostrar_informacion_mascota())
+                    print(mascota.mostrar_caracteristicas())
         
         elif opcion == "6":
             for cliente in clientes:
@@ -128,7 +128,7 @@ def main():
         
         elif opcion == "8":
             umbral_minimo = int(input("Ingrese el umbral mínimo de inventario: "))
-            print(inventario.generar_alerta_inventario(umbral_minimo))
+            print(inventario.generar_alerta(umbral_minimo))
 
         elif opcion == "9":
             print("Saliendo del programa...")
